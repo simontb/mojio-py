@@ -2,11 +2,11 @@ import setuptools
 
 setuptools.setup(
     name="mojio-py",
-    version="0.0.1",
+    version="0.0.2",
     author="Simon Tenbeitel",
-    # author_email="author@example.com",
+    author_email="open-source@simontb.de",
     description="Moj.io API Python SDK",
-    # url="https://github.com/pypa/sampleproject",
+    url="https://github.com/simontb/mojio-py",
     packages=['mojio-py'],
     classifiers=[
         "Programming Language :: Python :: 3",
