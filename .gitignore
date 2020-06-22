@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 .idea
-mojio-py/main.py
+mojio_sdk/main.py
+*.json
