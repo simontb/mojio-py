@@ -1,5 +1,5 @@
-from authentication import Authentication
-from vehicle import Vehicle
+from .authentication import Authentication
+from .vehicle import Vehicle
 import requests
 
 
