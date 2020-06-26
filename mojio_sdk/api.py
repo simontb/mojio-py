@@ -54,7 +54,6 @@ class API:
         result = []
 
         for json_vehicle_data in json_data['Data']:
-            print(json_vehicle_data)
             device = Vehicle(json_vehicle_data)
             result.append(device)
 
