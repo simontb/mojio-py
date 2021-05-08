@@ -39,7 +39,7 @@ class API:
 
     def get_vehicles(self):
         if self._authentication is None or not self._authentication.is_valid():
-            return []
+            self.login()
 
         data_url = "https://" + self._tenant + "-api.moj.io/v2/vehicles"
 
