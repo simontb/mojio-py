@@ -38,4 +38,4 @@ class Authentication(object):
         current = time.time()
         expire_time = self.authenticated + self.expires_in
 
-        return expire_time > current
+        return expire_time > current + 10
