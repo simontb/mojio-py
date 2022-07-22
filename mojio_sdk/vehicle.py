@@ -12,7 +12,7 @@ class Vehicle:
         self.current_rpm = json_data.get('RPM').get('Value', 0)
         self.current_rpm_unit = json_data.get('RPM').get('Unit', '')
         self.current_speed = json_data.get('Speed').get('Value', 0)
-        self.current_speed_unit = json_data.get('Speed').get('Value', '')
+        self.current_speed_unit = json_data.get('Speed').get('Unit', '')
         self.parked = json_data.get('ParkedState').get('Value', 'unknown')
         self.status = json_data.get('VehicleStatus').get('Value', 'unknown')
         self.licence_plate = json_data.get('LicensePlate')
