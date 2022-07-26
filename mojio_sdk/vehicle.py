@@ -39,6 +39,9 @@ class Vehicle:
         self.tow_state = False
         if json_data.get('TowState') is not None:
             self.tow_state = json_data.get('TowState').get('Value', False)
+        self.disturbance_state = False
+        if json_data.get('DisturbanceState') is not None:
+            self.disturbance_state = json_data.get('DisturbanceState').get('Value', False)
         # Info
         self.licence_plate = json_data.get('LicensePlate')
         self.vin = json_data.get('DetectedVIN')
