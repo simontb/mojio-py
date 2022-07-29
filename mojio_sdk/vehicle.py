@@ -10,6 +10,22 @@ class Vehicle:
     def __init__(self, json_data):
         if json_data is None:
             return
+        # Info
+        self.licence_plate = json_data.get('LicensePlate', '')
+        self.vin = json_data.get('DetectedVIN')
+        if self.licence_plate == '':
+            self.id = self.vin
+        else:
+            self.id = self.licence_plate.replace("-", "_").replace(" ", "_")
+        self.mojio_id = json_data.get('Id')
+        self.last_contact = json_data.get('LastContactTime')
+        self.last_modified = json_data.get('LastModified')
+        self.name = None
+        vin_dict = json_data.get('VinDetails', None)
+        if vin_dict is not None:
+            self.name = '%s %s %s' % (vin_dict.get('Year', ''), vin_dict.get('Make', ''), vin_dict.get('Model', ''))
+        self.last_trip_id = json_data.get('LastTripId', '')
+        self.trips = None
         # Speed and RPM
         self.current_rpm = json_data.get('RPM').get('Value', 0)
         self.current_rpm_unit = json_data.get('RPM').get('Unit', '')
@@ -52,22 +68,6 @@ class Vehicle:
         disturbance_state_dict = json_data.get('DisturbanceState', None)
         if disturbance_state_dict is not None:
             self.disturbance_state = disturbance_state_dict.get('Value', False)
-        # Info
-        self.licence_plate = json_data.get('LicensePlate', '')
-        self.vin = json_data.get('DetectedVIN')
-        if self.licence_plate == '':
-            self.id = self.vin
-        else:
-            self.id = self.licence_plate.replace("-", "_").replace(" ", "_")
-        self.mojio_id = json_data.get('Id')
-        self.last_contact = json_data.get('LastContactTime')
-        self.last_modified = json_data.get('LastModified')
-        self.name = None
-        vin_dict = json_data.get('VinDetails', None)
-        if vin_dict is not None:
-            self.name = '%s %s %s' % (vin_dict.get('Year', ''), vin_dict.get('Make', ''), vin_dict.get('Model', ''))
-        self.last_trip_id = json_data.get('LastTripId', '')
-        self.trips = None
         # Seatbelt
         sb_dict = json_data.get('Seatbelt')
         if sb_dict is not None:
