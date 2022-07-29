@@ -1,5 +1,6 @@
 from .authentication import Authentication
 from .vehicle import Vehicle
+from .trip import Trip
 import requests
 
 
@@ -48,6 +49,28 @@ class API:
         data = response.json()
         return self._parse_devices(data)
 
+    def get_trips(self):
+        if self._authentication is None or not self._authentication.is_valid():
+            self.login()
+
+        data_url = "https://" + self._tenant + "-api.moj.io/v2/trips"
+
+        auth_header = self._authentication.create_header()
+        response = requests.get(data_url, headers=auth_header)
+        data = response.json()
+        return self._parse_trips(data)
+
+    def get_trip(self, trip_id: str):
+        if self._authentication is None or not self._authentication.is_valid():
+            self.login()
+
+        data_url = "https://" + self._tenant + "-api.moj.io/v2/trips/" + trip_id
+
+        auth_header = self._authentication.create_header()
+        response = requests.get(data_url, headers=auth_header)
+        data = response.json()
+        return self._parse_trips(data)
+
     @staticmethod
     def _parse_devices(json_data):
         """Parse result from API."""
@@ -55,6 +78,17 @@ class API:
 
         for json_vehicle_data in json_data['Data']:
             device = Vehicle(json_vehicle_data)
+            result.append(device)
+
+        return result
+
+    @staticmethod
+    def _parse_trips(json_data):
+        """Parse result from API."""
+        result = []
+
+        for json_trip_data in json_data['Data']:
+            device = Trip(json_trip_data)
             result.append(device)
 
         return result
