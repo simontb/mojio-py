@@ -1,7 +1,9 @@
 
 class Trip:
     def __init__(self, json_data):
-        if json_data is None:
+        self.is_empty = False
+        if json_data is None or len(json_data) == 0:
+            self.is_empty = True
             return
         self.raw_json = json_data
         self.id = json_data.get('Id', '')
@@ -9,7 +11,6 @@ class Trip:
         self.start_date = json_data.get('StartTimestamp', '')
         self.end_date = json_data.get('EndTimestamp', '')
         self.completed = json_data.get('Completed', False)
-        self.duration = 0
         temp_duration = json_data.get('Duration', None)
         if temp_duration is not None and self.completed:
             # Truncate off the microsections, because who cares.
@@ -17,16 +18,11 @@ class Trip:
             if len(s) > 0:
                 self.duration = s[0]
         # Speed and RPM
-        self.max_rpm = 0
-        self.max_rpm_unit = ''
         max_rpm_dict = json_data.get('MaxRPM', None)
         if max_rpm_dict is not None:
             self.max_rpm = max_rpm_dict.get('Value', 0)
             self.max_rpm_unit = max_rpm_dict.get('Unit', '')
         # Max Speed
-        self.max_speed_kph = 0
-        self.max_speed_mph = 0
-        self.max_speed_unit = ''
         max_speed_dict = json_data.get('MaxSpeed', None)
         if max_speed_dict is not None:
             self.max_speed_unit = max_speed_dict.get('Unit', '')
@@ -42,8 +38,6 @@ class Trip:
             self.harsh_accel = json_data.get('HarshAcclCount', 0)
 
         # Fuel
-        self.kpl = 0.0
-        self.mpg = 0.0
         fuel_effic_dict = json_data.get('FuelEfficiency', None)
         if self.completed and fuel_effic_dict is not None:
             self.fuel_efficiency_unit = fuel_effic_dict.get('Unit', '')
@@ -54,9 +48,7 @@ class Trip:
                 self.mgp = fuel_effic_dict.get('Value', 0)
                 self.kpl = float(self.mgp) / 2.352145
 
-        # distance
-        self.distance_km = 0.0
-        self.distance_mi = 0.0
+        # Distance
         distance_dict = json_data.get('Distance', None)
         if self.completed and distance_dict is not None:
             self.distance_unit = distance_dict.get('Unit', '')

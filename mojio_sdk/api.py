@@ -69,7 +69,7 @@ class API:
         auth_header = self._authentication.create_header()
         response = requests.get(data_url, headers=auth_header)
         data = response.json()
-        return self._parse_trips(data)
+        return Trip(data)
 
     @staticmethod
     def _parse_devices(json_data):

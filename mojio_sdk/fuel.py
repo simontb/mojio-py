@@ -1,11 +1,10 @@
 class Fuel:
 
     def __init__(self, json_data):
-        if json_data is None:
+        self.is_empty = False
+        if json_data is None or len(json_data) == 0:
+            self.is_empty = True
             return
-        self.fuel_level = 0.0
-        self.virtual_fuel_level = 0.0
-        self.fuel_capacity = 0.0
         fuel_level_dict = json_data.get('FuelLevel', None)
         if fuel_level_dict is not None:
             self.fuel_level = fuel_level_dict.get('Value', 0.0)

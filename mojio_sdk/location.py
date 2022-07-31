@@ -1,7 +1,9 @@
 class Location:
 
     def __init__(self, json_data):
-        if json_data is None:
+        self.is_empty = False
+        if json_data is None or len(json_data) == 0:
+            self.is_empty = True
             return
         self.latitude = json_data.get('Lat')
         self.longitude = json_data.get('Lng')
