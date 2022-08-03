@@ -1,9 +1,11 @@
-class EngineOil:
+from .abstract_mojio import AbstractMojio
+
+
+class EngineOil(AbstractMojio):
 
     def __init__(self, json_data):
-        self.is_empty = False
-        if json_data is None or len(json_data) == 0:
-            self.is_empty = True
+        super().__init__(json_data)
+        if not self.has_data:
             return
         self.level_warning = json_data.get('EngineOilLevelWarning', 'None')
         self.low_pressure_warning = json_data.get('EngineOilPressureLowWarning', False)
@@ -17,6 +19,3 @@ class EngineOil:
             else:
                 self.temp_f = temp
                 self.temp_c = (self.temp_f - 32) * 1.8
-
-    def getattribute(self, name: str, default=''):
-        return getattr(self, name, default)

@@ -1,11 +1,14 @@
-class Dtc:
+from .abstract_mojio import AbstractMojio
 
-    def __init__(self, dtc_code_list):
-        self.is_empty = False
+
+class Dtc(AbstractMojio):
+
+    def __init__(self, dtc_code_list: list):
+        self.has_data = True
         self.count = len(dtc_code_list)
         self.details = []
         if dtc_code_list is None or self.count == 0:
-            self.is_empty = True
+            self.has_data = False
             return
         for dtc in dtc_code_list:
             self.details.append({"timestamp": dtc.get('Timestamp', ''),
@@ -15,6 +18,3 @@ class Dtc:
                                  "state_type": dtc.get('StateType', ''),
                                  "severity": dtc.get('Severity', ''),
                                  "ignored": dtc.get('Ignored', '')})
-
-    def getattribute(self, name: str, default=''):
-        return getattr(self, name, default)

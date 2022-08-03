@@ -14,13 +14,13 @@ class API:
         self._password = password
         self._authentication = None
 
-    def logged_in(self):
+    def logged_in(self) -> bool:
         if self._authentication is None:
             return False
         else:
             return self._authentication.is_valid()
 
-    def login(self):
+    def login(self) -> bool:
         auth_url = "https://" + self._tenant + "-identity.moj.io/oauth2/token"
 
         payload = {
@@ -38,41 +38,28 @@ class API:
         self._authentication.set_json(response.json())
         return self.logged_in()
 
-    def get_vehicles(self):
+    def get_vehicles(self) -> list[Vehicle]:
+        return self._parse_devices(self._get_response(self._get_endpoint("vehicles")))
+
+    def get_trips(self) -> list[Trip]:
+        return self._parse_trips(self._get_response(self._get_endpoint("trips")))
+
+    def get_trip(self, trip_id: str) -> Trip:
+        return Trip(self._get_response(self._get_endpoint("%s/%s" % ("trips", trip_id))))
+
+    def _get_endpoint(self, service: str) -> str:
+        return "https://%s-api.moj.io/v2/%s" % (self._tenant, service)
+
+    def _get_response(self, data_url: str) -> dict:
         if self._authentication is None or not self._authentication.is_valid():
             self.login()
 
-        data_url = "https://" + self._tenant + "-api.moj.io/v2/vehicles"
-
         auth_header = self._authentication.create_header()
         response = requests.get(data_url, headers=auth_header)
-        data = response.json()
-        return self._parse_devices(data)
-
-    def get_trips(self):
-        if self._authentication is None or not self._authentication.is_valid():
-            self.login()
-
-        data_url = "https://" + self._tenant + "-api.moj.io/v2/trips"
-
-        auth_header = self._authentication.create_header()
-        response = requests.get(data_url, headers=auth_header)
-        data = response.json()
-        return self._parse_trips(data)
-
-    def get_trip(self, trip_id: str):
-        if self._authentication is None or not self._authentication.is_valid():
-            self.login()
-
-        data_url = "https://" + self._tenant + "-api.moj.io/v2/trips/" + trip_id
-
-        auth_header = self._authentication.create_header()
-        response = requests.get(data_url, headers=auth_header)
-        data = response.json()
-        return Trip(data)
+        return response.json()
 
     @staticmethod
-    def _parse_devices(json_data):
+    def _parse_devices(json_data) -> list[Vehicle]:
         """Parse result from API."""
         result = []
 
@@ -83,7 +70,7 @@ class API:
         return result
 
     @staticmethod
-    def _parse_trips(json_data):
+    def _parse_trips(json_data) -> list[Trip]:
         """Parse result from API."""
         result = []
 

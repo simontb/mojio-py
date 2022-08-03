@@ -1,9 +1,11 @@
-class Fuel:
+from .abstract_mojio import AbstractMojio
+
+
+class Fuel(AbstractMojio):
 
     def __init__(self, json_data):
-        self.is_empty = False
-        if json_data is None or len(json_data) == 0:
-            self.is_empty = True
+        super().__init__(json_data)
+        if not self.has_data:
             return
         fuel_level_dict = json_data.get('FuelLevel', None)
         if fuel_level_dict is not None:
@@ -14,6 +16,3 @@ class Fuel:
         fuel_cap_dict = json_data.get('FuelCapacity', None)
         if fuel_cap_dict is not None:
             self.fuel_capacity = fuel_cap_dict.get('Value', 0.0)
-
-    def getattribute(self, name: str, default=''):
-        return getattr(self, name, default)
