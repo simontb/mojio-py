@@ -6,6 +6,7 @@ setuptools.setup(
     author="Simon Tenbeitel",
     author_email="open-source@simontb.de",
     description="Moj.io API Python SDK",
+    long_description="Moj.io API Python SDK",
     url="https://github.com/simontb/mojio-py",
     packages=['mojio_sdk'],
     classifiers=[
