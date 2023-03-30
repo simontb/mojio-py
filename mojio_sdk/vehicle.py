@@ -4,17 +4,16 @@ from .engine_oil import EngineOil
 from .tires import Tires
 from .battery import Battery
 from .dtc import Dtc
+from .abstract_mojio import AbstractMojio
 
 
-class Vehicle:
+class Vehicle(AbstractMojio):
 
     def __init__(self, json_data):
-        self.is_empty = False
-        if json_data is None or len(json_data) == 0:
-            self.is_empty = True
+        super().__init__(json_data)
+        if not self.has_data:
             return
         # Info
-        self.raw_json = json_data
         self.licence_plate = json_data.get('LicensePlate', '')
         self.vin = json_data.get('DetectedVIN', None)
         if self.vin == '' or self.vin is None:
