@@ -1,9 +1,11 @@
-class Location:
+from .abstract_mojio import AbstractMojio
+
+
+class Location(AbstractMojio):
 
     def __init__(self, json_data):
-        self.is_empty = False
-        if json_data is None or len(json_data) == 0:
-            self.is_empty = True
+        super().__init__(json_data)
+        if not self.has_data:
             return
         self.latitude = json_data.get('Lat')
         self.longitude = json_data.get('Lng')
@@ -11,6 +13,3 @@ class Location:
         self.formatted_address = ''
         if self.address is not None:
             self.formatted_address = self.address.get('FormattedAddress', '')
-
-    def getattribute(self, name: str, default=''):
-        return getattr(self, name, default)

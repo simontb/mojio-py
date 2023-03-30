@@ -1,11 +1,12 @@
+from .abstract_mojio import AbstractMojio
 
-class Trip:
+
+class Trip(AbstractMojio):
+
     def __init__(self, json_data):
-        self.is_empty = False
-        if json_data is None or len(json_data) == 0:
-            self.is_empty = True
+        super().__init__(json_data)
+        if not self.has_data:
             return
-        self.raw_json = json_data
         self.id = json_data.get('Id', '')
         self.vehicle_id = json_data.get('VehicleId', '')
         self.start_date = json_data.get('StartTimestamp', '')
@@ -62,9 +63,6 @@ class Trip:
             else:
                 self.distance_km = distance * 1.609
                 self.distance_mi = distance
-
-    def getattribute(self, name: str, default=''):
-        return getattr(self, name, default)
 
     @staticmethod
     def get_trip(trips: list, trip_id: str):

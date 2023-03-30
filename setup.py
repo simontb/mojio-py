@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="mojio_sdk",
-    version="0.5.0",
+    version="0.6.0",
     author="Simon Tenbeitel",
     author_email="open-source@simontb.de",
     description="Moj.io API Python SDK",
